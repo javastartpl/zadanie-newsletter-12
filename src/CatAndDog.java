@@ -1,21 +1,18 @@
-public enum CatAndDog {
-    CAT("kota"),
-    DOG("psa");
+import java.lang.reflect.Field;
 
-    String name;
+public interface CatAndDog {
+    static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+        String source = "Ala ma kota";
+        Class<? extends String> aClass = source.getClass();
+        Field valueField = aClass.getDeclaredField("value");
+        valueField.setAccessible(true);
+        byte[] chars = (byte[]) valueField.get(source);
+        chars[7] = 'p';
+        chars[8] = 's';
+        chars[9] = 'a';
+        chars[10] = ' ';
 
-    CatAndDog(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    public static void main(String[] args) {
-        StringBuilder string = new StringBuilder("Ala ma ").append(CatAndDog.CAT);
-        string.replace(string.indexOf(String.valueOf(CatAndDog.CAT)), string.length(), String.valueOf(CatAndDog.DOG));
-        System.out.println(string);
+        System.out.println(source);
     }
 }
+
